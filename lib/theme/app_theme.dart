@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  static const primaryColor = Color(0xFF1E88E5);
-  static const secondaryColor = Color(0xFF26A69A);
+  static const primaryColor = Color(0xFF6200EA);
+  static const secondaryColor = Color(0xFF00C853);
+  static const accentColor = Color(0xFFFF4081);
   static const backgroundColor = Color(0xFFF5F5F7);
   static const cardColor = Colors.white;
   static const textColor = Color(0xFF2D3142);
   static const subtitleColor = Color(0xFF9E9E9E);
+  static const gradientStart = Color(0xFF6200EA);
+  static const gradientEnd = Color(0xFF00C853);
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -15,6 +18,9 @@ class AppTheme {
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryColor,
         background: backgroundColor,
+        primary: primaryColor,
+        secondary: secondaryColor,
+        tertiary: accentColor,
       ),
       scaffoldBackgroundColor: backgroundColor,
       cardTheme: CardTheme(
@@ -58,6 +64,26 @@ class AppTheme {
         bodyMedium: GoogleFonts.inter(
           color: textColor,
           fontSize: 14,
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: primaryColor,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: primaryColor,
+          side: const BorderSide(color: primaryColor),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
       ),
     );

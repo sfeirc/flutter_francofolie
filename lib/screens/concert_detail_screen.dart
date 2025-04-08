@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/concert.dart';
 import '../theme/app_theme.dart';
 import '../animations/fade_animation.dart';
+import '../l10n/fr.dart';
 
 class ConcertDetailScreen extends StatelessWidget {
   final Concert concert;
@@ -10,14 +11,20 @@ class ConcertDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isSmallScreen = MediaQuery.of(context).size.width < 600;
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 200,
+            expandedHeight: isSmallScreen ? 150 : 200,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(concert.title),
+              title: Text(
+                concert.title,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
               background: Hero(
                 tag: 'concert-${concert.id}',
                 child: Container(
@@ -26,8 +33,8 @@ class ConcertDetailScreen extends StatelessWidget {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        AppTheme.primaryColor.withOpacity(0.7),
-                        AppTheme.primaryColor.withOpacity(0.0),
+                        AppTheme.gradientStart.withOpacity(0.7),
+                        AppTheme.gradientEnd.withOpacity(0.0),
                       ],
                     ),
                   ),
@@ -37,7 +44,7 @@ class ConcertDetailScreen extends StatelessWidget {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(isSmallScreen ? 12.0 : 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -65,7 +72,7 @@ class ConcertDetailScreen extends StatelessWidget {
                   FadeAnimation(
                     delay: 0.3,
                     child: Text(
-                      'Artists',
+                      FrenchTranslations.translations['artists']!,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
@@ -88,7 +95,7 @@ class ConcertDetailScreen extends StatelessWidget {
                     child: _buildInfoRow(
                       context,
                       Icons.location_on,
-                      'Location',
+                      FrenchTranslations.translations['location']!,
                       '${concert.sceneName} - ${concert.location}',
                     ),
                   ),
@@ -98,8 +105,8 @@ class ConcertDetailScreen extends StatelessWidget {
                     child: _buildInfoRow(
                       context,
                       Icons.calendar_today,
-                      'Date & Time',
-                      '${concert.date.day}/${concert.date.month}/${concert.date.year} at ${concert.date.hour}:${concert.date.minute.toString().padLeft(2, '0')}',
+                      FrenchTranslations.translations['dateTime']!,
+                      '${concert.date.day}/${concert.date.month}/${concert.date.year} à ${concert.date.hour}:${concert.date.minute.toString().padLeft(2, '0')}',
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -108,7 +115,7 @@ class ConcertDetailScreen extends StatelessWidget {
                     child: _buildInfoRow(
                       context,
                       Icons.timer,
-                      'Duration',
+                      FrenchTranslations.translations['duration']!,
                       concert.duration,
                     ),
                   ),
@@ -118,15 +125,15 @@ class ConcertDetailScreen extends StatelessWidget {
                     child: _buildInfoRow(
                       context,
                       Icons.people,
-                      'Capacity',
-                      concert.capacity.toString(),
+                      FrenchTranslations.translations['capacity']!,
+                      '${concert.capacity} places',
                     ),
                   ),
                   const SizedBox(height: 24),
                   FadeAnimation(
                     delay: 0.9,
                     child: Text(
-                      'Description',
+                      FrenchTranslations.translations['description']!,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
@@ -142,7 +149,7 @@ class ConcertDetailScreen extends StatelessWidget {
                   FadeAnimation(
                     delay: 1.1,
                     child: Text(
-                      'Pricing',
+                      FrenchTranslations.translations['pricing']!,
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
@@ -167,7 +174,7 @@ class ConcertDetailScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
-                              '€${entry.value.toStringAsFixed(2)}',
+                              '${entry.value.toStringAsFixed(2)}€',
                               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                 color: AppTheme.secondaryColor,
                                 fontWeight: FontWeight.w600,
@@ -187,17 +194,16 @@ class ConcertDetailScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // TODO: Implement booking functionality
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Booking functionality coming soon!'),
+            SnackBar(
+              content: Text(FrenchTranslations.translations['bookingComingSoon']!),
               backgroundColor: AppTheme.primaryColor,
             ),
           );
         },
         backgroundColor: AppTheme.primaryColor,
         icon: const Icon(Icons.calendar_today),
-        label: const Text('Book Now'),
+        label: Text(FrenchTranslations.translations['bookNow']!),
       ),
     );
   }
