@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  static const primaryColor = Color(0xFF6200EA);
-  static const secondaryColor = Color(0xFF00C853);
-  static const accentColor = Color(0xFFFF4081);
-  static const backgroundColor = Color(0xFFF5F5F7);
+  static const primaryColor = Color(0xFF2196F3);
+  static const secondaryColor = Color(0xFF03A9F4);
+  static const accentColor = Color(0xFF00BCD4);
+  static const backgroundColor = Color(0xFFF5F9FF);
   static const cardColor = Colors.white;
-  static const textColor = Color(0xFF2D3142);
-  static const subtitleColor = Color(0xFF9E9E9E);
-  static const gradientStart = Color(0xFF6200EA);
-  static const gradientEnd = Color(0xFF00C853);
+  static const textColor = Color(0xFF1A237E);
+  static const subtitleColor = Color(0xFF546E7A);
+  static const gradientStart = Color(0xFF2196F3);
+  static const gradientEnd = Color(0xFF00BCD4);
+  static const shimmerBaseColor = Color(0xFFE3F2FD);
+  static const shimmerHighlightColor = Color(0xFFBBDEFB);
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -25,7 +27,8 @@ class AppTheme {
       scaffoldBackgroundColor: backgroundColor,
       cardTheme: CardTheme(
         color: cardColor,
-        elevation: 0,
+        elevation: 2,
+        shadowColor: primaryColor.withOpacity(0.1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
@@ -74,6 +77,8 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
+          elevation: 2,
+          shadowColor: primaryColor.withOpacity(0.3),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -84,6 +89,14 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
+        ),
+      ),
+      chipTheme: ChipThemeData(
+        backgroundColor: primaryColor.withOpacity(0.1),
+        labelStyle: const TextStyle(color: primaryColor),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
         ),
       ),
     );

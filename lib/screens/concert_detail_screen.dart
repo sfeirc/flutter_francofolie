@@ -33,7 +33,7 @@ class ConcertDetailScreen extends StatelessWidget {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        AppTheme.gradientStart.withOpacity(0.7),
+                        AppTheme.gradientStart.withOpacity(0.8),
                         AppTheme.gradientEnd.withOpacity(0.0),
                       ],
                     ),
@@ -198,6 +198,10 @@ class ConcertDetailScreen extends StatelessWidget {
             SnackBar(
               content: Text(FrenchTranslations.translations['bookingComingSoon']!),
               backgroundColor: AppTheme.primaryColor,
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           );
         },
