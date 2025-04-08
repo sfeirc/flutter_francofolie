@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/concert.dart';
 
 class ApiService {
-  static const String baseUrl = 'http://172.26.240.243:3000/api';
+  static const String baseUrl = 'http://172.16.199.254:3000/api';
 
   Future<List<Concert>> getConcerts() async {
     final response = await http.get(Uri.parse('$baseUrl/concerts'));
@@ -11,7 +11,7 @@ class ApiService {
       final List<dynamic> jsonData = json.decode(response.body);
       return jsonData.map((json) => Concert.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load concerts');
+      throw Exception('Erreur de chargement des concerts');
     }
   }
 
@@ -21,7 +21,7 @@ class ApiService {
       final List<dynamic> jsonData = json.decode(response.body);
       return jsonData.map((json) => Concert.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load concerts by scene');
+      throw Exception('Erreur de chargement des scene');
     }
   }
 
@@ -31,7 +31,7 @@ class ApiService {
       final List<dynamic> jsonData = json.decode(response.body);
       return jsonData.map((json) => Concert.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load concerts by date');
+      throw Exception('Erreur de chargement des date');
     }
   }
 
@@ -41,7 +41,7 @@ class ApiService {
       final List<dynamic> jsonData = json.decode(response.body);
       return jsonData.map((json) => Concert.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load concerts by artist');
+      throw Exception('Erreur de chargement des artiste');
     }
   }
 
@@ -50,7 +50,7 @@ class ApiService {
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      throw Exception('Failed to load scenes');
+      throw Exception('Erreur de chargement des scenes');
     }
   }
 
@@ -59,7 +59,7 @@ class ApiService {
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      throw Exception('Failed to load artists');
+      throw Exception('Erreur de chargement des artists');
     }
   }
 } 

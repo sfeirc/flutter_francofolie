@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import '../models/concert.dart';
 import '../services/api_service.dart';
-import '../widgets/loading_indicator.dart';
+// import '../widgets/loading_indicator.dart';
 import '../animations/fade_animation.dart';
 import '../theme/app_theme.dart';
 import '../l10n/fr.dart';
