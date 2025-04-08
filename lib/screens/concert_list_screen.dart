@@ -5,6 +5,7 @@ import '../services/api_service.dart';
 import '../widgets/loading_indicator.dart';
 import '../animations/fade_animation.dart';
 import '../theme/app_theme.dart';
+import '../l10n/fr.dart';
 import 'concert_detail_screen.dart';
 
 // Widget principal pour l'écran de liste des concerts
@@ -50,7 +51,7 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error loading data: $e'),
+            content: Text(FrenchTranslations.translations['errorLoading']!),
             backgroundColor: Colors.red,
           ),
         );
@@ -82,7 +83,7 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error filtering concerts: $e'),
+            content: Text(FrenchTranslations.translations['errorFiltering']!),
             backgroundColor: Colors.red,
           ),
         );
@@ -92,23 +93,25 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isSmallScreen = MediaQuery.of(context).size.width < 600;
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 120,
+            expandedHeight: isSmallScreen ? 100 : 120,
             floating: true,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: const Text('Francofolies'),
+              title: Text(FrenchTranslations.translations['appTitle']!),
               background: Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      AppTheme.primaryColor.withOpacity(0.7),
-                      AppTheme.primaryColor.withOpacity(0.0),
+                      AppTheme.gradientStart.withOpacity(0.7),
+                      AppTheme.gradientEnd.withOpacity(0.0),
                     ],
                   ),
                 ),
@@ -126,8 +129,13 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
               child: LoadingIndicator(),
             )
           else if (_concerts.isEmpty)
-            const SliverFillRemaining(
-              child: Center(child: Text('No concerts found')),
+            SliverFillRemaining(
+              child: Center(
+                child: Text(
+                  FrenchTranslations.translations['noConcerts']!,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ),
             )
           else
             SliverList(
@@ -148,7 +156,7 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
                           ),
                           borderRadius: BorderRadius.circular(16),
                           child: Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: EdgeInsets.all(isSmallScreen ? 12.0 : 16.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -161,6 +169,8 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
                                           Text(
                                             concert.title,
                                             style: Theme.of(context).textTheme.titleLarge,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                           const SizedBox(height: 4),
                                           Text(
@@ -168,6 +178,8 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
                                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                               color: AppTheme.subtitleColor,
                                             ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ],
                                       ),
@@ -200,10 +212,14 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
                                       color: AppTheme.subtitleColor,
                                     ),
                                     const SizedBox(width: 4),
-                                    Text(
-                                      '${concert.sceneName} - ${concert.location}',
-                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                        color: AppTheme.subtitleColor,
+                                    Expanded(
+                                      child: Text(
+                                        '${concert.sceneName} - ${concert.location}',
+                                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                          color: AppTheme.subtitleColor,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
                                     const Spacer(),
@@ -238,6 +254,8 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
   }
 
   Future<void> _showFilterDialog() async {
+    final isSmallScreen = MediaQuery.of(context).size.width < 600;
+
     await showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -248,9 +266,9 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         padding: EdgeInsets.fromLTRB(
+          isSmallScreen ? 12 : 16,
           16,
-          16,
-          16,
+          isSmallScreen ? 12 : 16,
           MediaQuery.of(context).viewInsets.bottom + 16,
         ),
         child: Column(
@@ -258,20 +276,23 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Filter Concerts',
+              FrenchTranslations.translations['filterConcerts']!,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               value: _selectedScene,
               decoration: InputDecoration(
-                labelText: 'Scene',
+                labelText: FrenchTranslations.translations['scene'],
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
               items: [
-                const DropdownMenuItem(value: null, child: Text('All Scenes')),
+                DropdownMenuItem(
+                  value: null,
+                  child: Text(FrenchTranslations.translations['allScenes']!),
+                ),
                 ..._scenes.map((scene) => DropdownMenuItem(
                       value: scene['id_scenes'],
                       child: Text(scene['nom_scene']),
@@ -289,13 +310,16 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
             DropdownButtonFormField<String>(
               value: _selectedArtist,
               decoration: InputDecoration(
-                labelText: 'Artist',
+                labelText: FrenchTranslations.translations['artist'],
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
               items: [
-                const DropdownMenuItem(value: null, child: Text('All Artists')),
+                DropdownMenuItem(
+                  value: null,
+                  child: Text(FrenchTranslations.translations['allArtists']!),
+                ),
                 ..._artists.map((artist) => DropdownMenuItem(
                       value: artist['id_artistes'],
                       child: Text(artist['nom_artistes']),
@@ -335,7 +359,7 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
                   ),
                 ),
                 child: Text(_selectedDate == null
-                    ? 'Select Date'
+                    ? FrenchTranslations.translations['selectDate']!
                     : '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}'),
               ),
             ),
@@ -353,7 +377,7 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
                       _filterConcerts();
                       Navigator.pop(context);
                     },
-                    child: const Text('Clear'),
+                    child: Text(FrenchTranslations.translations['clear']!),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -371,7 +395,7 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    child: const Text('Apply'),
+                    child: Text(FrenchTranslations.translations['apply']!),
                   ),
                 ),
               ],
