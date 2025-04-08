@@ -7,6 +7,7 @@ import '../animations/fade_animation.dart';
 import '../theme/app_theme.dart';
 import '../l10n/fr.dart';
 import 'concert_detail_screen.dart';
+import '../animations/shimmer_animation.dart';
 
 // Widget principal pour l'écran de liste des concerts
 class ConcertListScreen extends StatefulWidget {
@@ -110,7 +111,7 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      AppTheme.gradientStart.withOpacity(0.7),
+                      AppTheme.gradientStart.withOpacity(0.8),
                       AppTheme.gradientEnd.withOpacity(0.0),
                     ],
                   ),
@@ -125,15 +126,82 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
             ],
           ),
           if (_isLoading)
-            const SliverFillRemaining(
-              child: LoadingIndicator(),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return ShimmerAnimation(
+                    isLoading: true,
+                    child: Card(
+                      child: Padding(
+                        padding: EdgeInsets.all(isSmallScreen ? 12.0 : 16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 24,
+                              width: double.infinity,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(height: 8),
+                            Container(
+                              height: 16,
+                              width: 200,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              children: [
+                                Container(
+                                  height: 16,
+                                  width: 16,
+                                  color: Colors.white,
+                                ),
+                                const SizedBox(width: 4),
+                                Container(
+                                  height: 16,
+                                  width: 150,
+                                  color: Colors.white,
+                                ),
+                                const Spacer(),
+                                Container(
+                                  height: 16,
+                                  width: 16,
+                                  color: Colors.white,
+                                ),
+                                const SizedBox(width: 4),
+                                Container(
+                                  height: 16,
+                                  width: 50,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                childCount: 5,
+              ),
             )
           else if (_concerts.isEmpty)
             SliverFillRemaining(
               child: Center(
-                child: Text(
-                  FrenchTranslations.translations['noConcerts']!,
-                  style: Theme.of(context).textTheme.titleLarge,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.music_note,
+                      size: 64,
+                      color: AppTheme.primaryColor.withOpacity(0.5),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      FrenchTranslations.translations['noConcerts']!,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ],
                 ),
               ),
             )
@@ -206,7 +274,7 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
                                 const SizedBox(height: 16),
                                 Row(
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.location_on_outlined,
                                       size: 16,
                                       color: AppTheme.subtitleColor,
@@ -223,7 +291,7 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
                                       ),
                                     ),
                                     const Spacer(),
-                                    const Icon(
+                                    Icon(
                                       Icons.access_time,
                                       size: 16,
                                       color: AppTheme.subtitleColor,
