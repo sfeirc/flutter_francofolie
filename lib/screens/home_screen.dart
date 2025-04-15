@@ -4,8 +4,6 @@ import 'favorites_screen.dart';
 import 'settings_screen.dart';
 import '../l10n/fr.dart';
 import '../theme/app_theme.dart';
-import '../providers/favorites_provider.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,39 +17,36 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => FavoritesProvider(),
-      child: Scaffold(
-        body: IndexedStack(
-          index: _currentIndex,
-          children: const [
-            ConcertListScreen(),
-            FavoritesScreen(),
-            SettingsScreen(),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.music_note),
-              label: FrenchTranslations.translations['concerts'] ?? 'Concerts',
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.favorite),
-              label: FrenchTranslations.translations['favorites'] ?? 'Favoris',
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.settings),
-              label: FrenchTranslations.translations['settings'] ?? 'Réglages',
-            ),
-          ],
-        ),
+    return Scaffold(
+      body: IndexedStack(
+        index: _currentIndex,
+        children: const [
+          ConcertListScreen(),
+          FavoritesScreen(),
+          SettingsScreen(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.music_note),
+            label: FrenchTranslations.translations['concerts'] ?? 'Concerts',
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.favorite),
+            label: FrenchTranslations.translations['favorites'] ?? 'Favoris',
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.settings),
+            label: FrenchTranslations.translations['settings'] ?? 'Réglages',
+          ),
+        ],
       ),
     );
   }

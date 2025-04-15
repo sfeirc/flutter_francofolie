@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'theme/app_theme.dart';
 import 'screens/home_screen.dart';
 import 'providers/theme_provider.dart';
+import 'providers/favorites_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -13,8 +14,11 @@ void main() {
   ]);
   
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
+      ],
       child: const MyApp(),
     ),
   );
