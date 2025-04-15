@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'screens/concert_list_screen.dart';
+import 'package:flutter/services.dart';
 import 'theme/app_theme.dart';
+import 'screens/home_screen.dart';
+import 'providers/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const ProviderScope(child: MyApp()));
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,11 +25,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    
     return MaterialApp(
-      title: 'Francofolies',
+      title: 'Francofolie',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const ConcertListScreen(),
+      darkTheme: AppTheme.darkTheme,
+      themeMode: themeProvider.themeMode,
+      home: const HomeScreen(),
     );
   }
 }

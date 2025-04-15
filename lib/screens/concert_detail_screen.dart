@@ -3,6 +3,8 @@ import '../models/concert.dart';
 import '../theme/app_theme.dart';
 import '../animations/fade_animation.dart';
 import '../l10n/fr.dart';
+import '../providers/favorites_provider.dart';
+import 'package:provider/provider.dart';
 
 class ConcertDetailScreen extends StatelessWidget {
   final Concert concert;
@@ -12,6 +14,8 @@ class ConcertDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isSmallScreen = MediaQuery.of(context).size.width < 600;
+    final favoritesProvider = Provider.of<FavoritesProvider>(context);
+    final isFavorite = favoritesProvider.isFavorite(concert.id);
 
     return Scaffold(
       body: CustomScrollView(
@@ -19,6 +23,31 @@ class ConcertDetailScreen extends StatelessWidget {
           SliverAppBar(
             expandedHeight: isSmallScreen ? 150 : 200,
             pinned: true,
+            actions: [
+              IconButton(
+                icon: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorite ? AppTheme.primaryColor : Colors.white,
+                ),
+                onPressed: () {
+                  favoritesProvider.toggleFavorite(concert);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        isFavorite 
+                          ? 'Concert retiré des favoris'
+                          : 'Concert ajouté aux favoris',
+                      ),
+                      duration: const Duration(seconds: 1),
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               title: Text(
                 concert.title,

@@ -8,6 +8,8 @@ import '../theme/app_theme.dart';
 import '../l10n/fr.dart';
 import 'concert_detail_screen.dart';
 import '../animations/shimmer_animation.dart';
+import '../providers/favorites_provider.dart';
+import 'package:provider/provider.dart';
 
 // Widget principal pour l'écran de liste des concerts
 class ConcertListScreen extends StatefulWidget {
@@ -268,6 +270,34 @@ class _ConcertListScreenState extends State<ConcertListScreen> {
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
+                                    ),
+                                    Consumer<FavoritesProvider>(
+                                      builder: (ctx, favoritesProvider, _) {
+                                        final isFavorite = favoritesProvider.isFavorite(concert.id);
+                                        return IconButton(
+                                          icon: Icon(
+                                            isFavorite ? Icons.favorite : Icons.favorite_border,
+                                            color: isFavorite ? AppTheme.primaryColor : AppTheme.subtitleColor,
+                                          ),
+                                          onPressed: () {
+                                            favoritesProvider.toggleFavorite(concert);
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  isFavorite 
+                                                    ? 'Concert retiré des favoris'
+                                                    : 'Concert ajouté aux favoris',
+                                                ),
+                                                duration: const Duration(seconds: 1),
+                                                behavior: SnackBarBehavior.floating,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
                                     ),
                                   ],
                                 ),
